@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Youtube 2x toggle",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Add 1x/2x playback speed toggle to the Youtube video player bottom right panel.",
   "homepage_url": "https://github.com/pegov/youtube-2x-toggle",
   "icons": {

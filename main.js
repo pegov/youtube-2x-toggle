@@ -37,6 +37,7 @@ class Instance {
     this.i15x = browser.runtime.getURL("images/1.5x.svg")
     this.i175x = browser.runtime.getURL("images/1.75x.svg")
     this.i2x = browser.runtime.getURL("images/2x.svg")
+    this.i3x = browser.runtime.getURL("images/3x.svg")
 
     this.removeExisting()
     this.create()
@@ -82,6 +83,7 @@ class Instance {
   bind() {
     this.video.addEventListener('ratechange', this.updateRateDisplay.bind(this))
     this.container.addEventListener('click', this.click.bind(this))
+    this.container.addEventListener('auxclick', this.auxclick.bind(this))
   }
   click() {
     let value = this.video.playbackRate
@@ -90,11 +92,34 @@ class Instance {
     } else {
       this.video.playbackRate = 1.0
     }
+    this.updateSessionStorage(this.video.playbackRate)
+  }
+  auxclick(e) {
+    if (e.button != 1) {
+      return
+    }
+    let value = this.video.playbackRate
+    if (value === 3.0) {
+      this.video.playbackRate = 1.0
+    } else {
+      this.video.playbackRate = 3.0
+    }
+    this.updateSessionStorage(this.video.playbackRate)
+  }
+
+  updateSessionStorage(rate) {
+    const key = "yt-player-playback-rate"
+    const now = Date.now()
+    const value = JSON.stringify({ data: rate, creation: now })
+    sessionStorage.setItem(key, value)
   }
 
   updateRateDisplay() {
     let value = this.video.playbackRate
     switch (value) {
+      case 3.0:
+        this.container.innerHTML = this.getSVG(this.i3x, true)
+        break
       case 2.0:
         this.container.innerHTML = this.getSVG(this.i2x, true)
         break
