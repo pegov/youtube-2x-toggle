@@ -87,10 +87,10 @@ class Instance {
   }
   click() {
     let value = this.video.playbackRate
-    if (value === 1.0) {
-      this.video.playbackRate = 2.0
-    } else {
+    if (value === 2.0) {
       this.video.playbackRate = 1.0
+    } else {
+      this.video.playbackRate = 2.0
     }
     this.updateSessionStorage(this.video.playbackRate)
   }
