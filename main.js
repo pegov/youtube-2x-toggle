@@ -38,6 +38,7 @@ class Instance {
     this.i175x = browser.runtime.getURL("images/1.75x.svg")
     this.i2x = browser.runtime.getURL("images/2x.svg")
     this.i3x = browser.runtime.getURL("images/3x.svg")
+    this.i4x = browser.runtime.getURL("images/4x.svg")
 
     this.removeExisting()
     this.create()
@@ -57,20 +58,24 @@ class Instance {
     if (w) {
       return `
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <svg x="100%" y="100%" overflow="visible">
-            <image x="-34" y="-48" width="28px" height="48px" xlink:href="${url}">
-          </svg>
+            <image x="-1" y="-11" width="28px" height="48px" xlink:href="${url}">
         </svg>
         `
     } else {
       return  `
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <svg x="100%" y="100%" overflow="visible">
-            <image x="-48" y="-48" width="48px" height="48px" xlink:href="${url}">
-          </svg>
+            <image x="-1" y="-11" width="48px" height="48px" xlink:href="${url}">
         </svg>
       `
     }
+  }
+
+  getSVGFor2or4(url, w) {
+      return  `
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <image x="0" y="-11" width="26px" height="48px" xlink:href="${url}">
+        </svg>
+      `
   }
 
   create() {
@@ -87,7 +92,7 @@ class Instance {
   }
   click() {
     let value = this.video.playbackRate
-    if (value === 2.0) {
+    if (value !== 1.0 ) {
       this.video.playbackRate = 1.0
     } else {
       this.video.playbackRate = 2.0
@@ -100,7 +105,7 @@ class Instance {
     }
     let value = this.video.playbackRate
     if (value === 3.0) {
-      this.video.playbackRate = 1.0
+      this.video.playbackRate = 4.0
     } else {
       this.video.playbackRate = 3.0
     }
@@ -117,11 +122,14 @@ class Instance {
   updateRateDisplay() {
     let value = this.video.playbackRate
     switch (value) {
+      case 4.0:
+        this.container.innerHTML = this.getSVGFor2or4(this.i4x, true)
+        break
       case 3.0:
         this.container.innerHTML = this.getSVG(this.i3x, true)
         break
       case 2.0:
-        this.container.innerHTML = this.getSVG(this.i2x, true)
+        this.container.innerHTML = this.getSVGFor2or4(this.i2x, true)
         break
       case 1.75:
         this.container.innerHTML = this.getSVG(this.i175x, false)
